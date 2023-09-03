@@ -20,6 +20,7 @@ export default function App() {
   const [email,setEmail] = useState('')
   const navigate = useNavigate()
   const [files,setFiles] = useState([])
+  const [task,setTask] = useState([])
   function login(data){
     console.log(data);
     signInWithEmailAndPassword(auth,data.email,data.password).then((user)=>{
@@ -38,6 +39,9 @@ export default function App() {
     onSnapshot(collection(db,"file"),(snapshot)=>{
       setFiles(snapshot.docs.map(doc=>({id:doc.id,...doc.data()})))
     })
+    onSnapshot(collection(db,"user_task"),(snapshot)=>{
+      setTask(snapshot.docs.map(doc=>({id:doc.id,...doc.data()})))
+    })
    
   },[])
   return (
@@ -50,7 +54,7 @@ export default function App() {
     <Route path='company/' element={<>
       <Header />
     <Sidebar />
-    <Company files={files} />
+    <Company files={files} task={task} />
     </>} />
     <Route path='create-company/' element={<>
       <Header />

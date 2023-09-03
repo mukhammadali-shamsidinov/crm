@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 
 function Modal() {
   const [visible, setVisible] = useState(false);
-const {handleSubmit,register} = useForm()
+const {handleSubmit,register,reset} = useForm()
 const [progressLoad,setProgressLoad] = useState(0)
   const show = () => {
     setVisible(true);
@@ -59,6 +59,7 @@ const [progressLoad,setProgressLoad] = useState(0)
         data_contact:String(`${new Date().getDate()}.${new Date().getMonth()+1}.${new Date().getFullYear()}`)
       }).then(()=>{
         toast.success("file uploaded")
+        reset()
       }).catch(()=>{
         toast.warning("Mistakes")
       })
@@ -81,22 +82,30 @@ const [progressLoad,setProgressLoad] = useState(0)
                 className="btn btn-sm btn-primary float-end"
               >
                 <span className="glyphicon glyphicon-cloud-upload" />{" "}
-                Загрузить файлы
+                <i class="fa-solid fa-upload"></i> Загрузить файлы
               </button>
 
-      <Rodal visible={visible} onClose={hide}>
+      <Rodal visible={visible} onClose={hide} height={300}>
         <h1>Upload File</h1>
         <form onSubmit={handleSubmit(uploadFile)}>
-        <input type="file" {...register("file")} />
-        <br /><br />
-        <button type='submit'>upload file</button>
+        <div class="mb-3">
+  <label for="fileInput" class="form-label">Choose a file</label>
+  <input type="file" class="form-control" id="fileInput" {...register("file",{
+    required:true
+  })}/>
+  <small class="text-muted">Max file size: 100MB</small>
+</div>
+
+
+
+        <button type='submit' className='btn btn-success'><i class="fa-solid fa-upload"></i> Загрузить файлы</button>
         </form>
         {progressLoad == 0 ? null :<>
             <b>{Math.floor(progressLoad)}</b>%
             <div className="progress">
               
   <div
-    className="progress-bar"
+    className="progress-bar progress-bar-striped"
     role="progressbar"
     style={{ width: `${progressLoad}%` }}
   />

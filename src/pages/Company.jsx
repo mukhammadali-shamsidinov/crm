@@ -4,16 +4,27 @@ import { Link } from 'react-router-dom'
 import { collection, deleteDoc, doc } from 'firebase/firestore'
 import { db } from '../config'
 import { toast } from 'react-toastify'
+import AddTaskModal from '../components/AddTaskModal'
+import EditTaskUser from '../components/EditTaskUser'
+import Loader from '../components/Loader'
 
 
-export default function Company({files}) {
+export default function Company({files,task}) {
+  
+    function deleteItem(id){
+      deleteDoc(doc(db,'user_task',id)).then(()=>{
+        toast.success("delete")
+      }).catch(()=>{
+        toast.error("Error")
+      })
+    }
+
     function deleteFile(id){
         deleteDoc(doc(db,"file",id)).then(()=>{
             toast.success("deleted successfull")
         }).catch(err=>{
             toast.error("error")
         })
-        alert(id)
     }
 
   return (
@@ -31,17 +42,10 @@ export default function Company({files}) {
               </p>
               <div className="org_header">Контактные данные</div>
               <p>
-                <a
-                  href=""
-                  data-toggle="modal"
-                  data-target="#add_contact"
-                  id="new_contact"
-                >
-                  Добавить <span data-feather="plus-circle" />{" "}
-                </a>
+                <AddTaskModal />
               </p>
               <div className="org_table">
-                <table className="slide_1_to_m " id="contacts">
+                <table className="slide_1_to_m" id="contacts">
                   <thead></thead>
                   <colgroup>
                     <col width="7%" />
@@ -51,8 +55,7 @@ export default function Company({files}) {
                     <col width="1%" />
                   </colgroup>
                   <tbody>
-                    <tr>
-                      <td>
+                  <td>
                         <b>ФИО</b>
                       </td>
                       <td>
@@ -65,29 +68,45 @@ export default function Company({files}) {
                         <b>Должность</b>
                       </td>
                       <td>&nbsp;</td>
-                    </tr>
-                    <tr id="">
+                   
+{
+  task.length >0 ? task.map(doc=>(
+<>
+
+                    <tr id="" style={{height:"50px"}} >
                       <td>
-                        <span id="contact_name1261">Иванов Иван Иванович</span>
+                        <span id="contact_name1261">{doc.name} {doc.surname} {doc.och}</span>
                       </td>
                       <td>
                         <span id="contact_phones1261">
-                          21212121212 <br />
+                          {doc.phone_number} <br />
                         </span>
                       </td>
                       <td>
                         <span id="contact_emails1261">
-                          <a href="mailto:as@as.as">as@as.as</a> <br />
+                          <Link to={`${doc.email}`}>{doc.email}</Link> <br />
                         </span>
                       </td>
                       <td>
-                        <span id="contact_dolzhnost1261">ДИРЕКТОР</span>
+                        <span id="contact_dolzhnost1261">{doc.task}</span>
                       </td>
-                      <td>
-                        <a href="#">редактировать</a>
-                        <a href="#">удалить</a>
+                      <td className='d-flex  gap-1 p-2' style={{height:"100%",alignItems:'center'}}>
+                        <EditTaskUser doc={doc} />
+                        <button className='btn btn-sm btn-danger'
+                        onClick={()=>deleteItem(doc.id)}
+                        ><i className="fa-solid fa-trash"></i></button>
+                        
                       </td>
                     </tr>
+</>
+  ))
+  :
+  <div className='container-fluid mx-auto p-5 m-5' style={{height:"50px"}}>
+  <Loader />
+            </div>
+}
+
+                   
                   </tbody>
                 </table>
               </div>
@@ -102,7 +121,6 @@ export default function Company({files}) {
                   }}
                   className="mt-1"
                 >
-                  <p>Документы не загружены</p>
                   <table width="100%" className="org_table ">
                     <colgroup>
                       <col width="50%" />
@@ -121,17 +139,21 @@ export default function Company({files}) {
                             </td>
                             <td>{doc?.created_time.slice(0,25)}</td>
                             <td className="red">
-                              <button className='btn btn-danger m-2' 
+                              <button className='btn btn-danger btn-sm m-2 float-end' 
                               onClick={()=>deleteFile(doc.id)}
                               >
-                                X удалить
+                                <i className="fa-solid fa-trash"></i>
                               </button>
                             </td>
                           </tr>
                             </>
                         ))
                      
-                        :null}
+                        :
+                        <div className='container-fluid mx-auto p-5 m-5' style={{height:"50px"}}>
+                        <Loader />
+                                  </div>
+                        }
                      
                      
                     </tbody>
