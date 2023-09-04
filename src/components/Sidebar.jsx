@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link,NavLink} from 'react-router-dom'
 
 export default function Sidebar() {
   return (
@@ -14,17 +14,21 @@ export default function Sidebar() {
     </h6>
     <ul className="nav flex-column mb-2">
       <li className="nav-item ">
-        <Link className="nav-link " to="/company">
+        <NavLink  className={({ isActive, isPending }) =>
+    isPending ? "pending" : isActive ? "active nav-link" : "nav-link"
+  } to="/company">
           <span data-feather="file-text" />
           Все компании
-        </Link>
+        </NavLink>
       </li>
       <li className="nav-item">
-        <Link className="nav-link active" to="/create-company">
+        <NavLink className={({ isActive, isPending }) =>
+    isPending ? "pending" : isActive ? "active nav-link" : 'nav-link'
+  } to="/create-company">
           <span data-feather="file-text" />
           Создать
           <span data-feather="plus-circle" />
-        </Link>
+        </NavLink>
       </li>
     </ul>
     <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -32,17 +36,21 @@ export default function Sidebar() {
     </h6>
     <ul className="nav flex-column mb-2">
       <li className="nav-item">
-        <Link className="nav-link" to="/main">
+        <NavLink className={({ isActive, isPending }) =>
+    isPending ? "pending" : isActive ? "active nav-link" : 'nav-link'
+  } to="/main">
           <span data-feather="users" />
           Все менеджеры
-        </Link>
+        </NavLink>
       </li>
       <li className="nav-item">
-        <Link className="nav-link" to="/create-user">
+        <NavLink className={({ isActive, isPending }) =>
+    isPending ? "pending" : isActive ? "active nav-link" : 'nav-link'
+  } to="/create-user">
           <span data-feather="users" />
           Добавить
           <span data-feather="plus-circle" />
-        </Link>
+        </NavLink>
       </li>
     </ul>
     <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">

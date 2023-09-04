@@ -15,7 +15,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Modal from './pages/Modal'
 import { collection, onSnapshot } from 'firebase/firestore'
-export default function App() {
+import { HiStatusOnline } from "react-icons/hi";
+export default function App(props) {
   const {handleSubmit,register,reset} = useForm()
   const [email,setEmail] = useState('')
   const navigate = useNavigate()
@@ -42,11 +43,16 @@ export default function App() {
     onSnapshot(collection(db,"user_task"),(snapshot)=>{
       setTask(snapshot.docs.map(doc=>({id:doc.id,...doc.data()})))
     })
+
+
    
   },[])
+
+
   return (
     <div>
  <ToastContainer />
+
 
       <Routes>
         <Route path='/' element={<Login form={handleSubmit} register={register} reset={reset} login={login} />} />

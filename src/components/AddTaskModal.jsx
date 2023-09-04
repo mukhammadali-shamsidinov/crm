@@ -39,7 +39,7 @@ export default function AddTaskModal() {
                 Добавить
               </button>
 
-      <Rodal visible={visible} onClose={hide} height={500}>
+      <Rodal visible={visible} onClose={hide} height={550}>
         <h1>Ishchi Qo'shish</h1>
        <br />
        <form onSubmit={handleSubmit(addTaskUser)}>
@@ -71,7 +71,7 @@ export default function AddTaskModal() {
         <option>Dastavchik</option>
         <option>Drekator</option>
         <option>Sotuvchi</option>
-        </select>
+        </select><br />
         <button className='btn btn-success w-100 mt-2' type='submit'>tasdiqlash</button>
        </form>
       </Rodal>

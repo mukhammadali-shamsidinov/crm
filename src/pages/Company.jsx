@@ -70,7 +70,7 @@ export default function Company({files,task}) {
                       <td>&nbsp;</td>
                    
 {
-  task.length >0 ? task.map(doc=>(
+  task.length >0 ? task.sort((a,b)=>a.name - b.name).map(doc=>(
 <>
 
                     <tr id="" style={{height:"50px"}} >
